@@ -1,0 +1,29 @@
+{
+  "id": "com.swttt.zonecheck",
+  "name": {
+    "en": "Zone check"
+  },
+  "version": "0.0.1",
+  "compatibility": "1.x",
+  "author": {
+    "name": "Bas Jansen",
+    "email": "bas@balotti.com"
+  },
+  "flow": {
+    "conditions": [{
+      "id": "checkZone",
+      "title": {
+        "en": "Lights are !{{on|off}} in",
+        "nl": "Lampen zijn !{{aan|uit}} in"
+      },
+      "args": [{
+        "name": "check",
+        "type": "autocomplete",
+        "placeholder": {
+          "en": "Choose a zone",
+          "nl": "Kies een zone"
+        }
+      }]
+    }]
+  }
+}
