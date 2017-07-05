@@ -1,4 +1,4 @@
-** Zone Check **
+**Zone Check**
 
 A simple tool to check if you left any lights on in a zone. Very basic, for personal use only. Not able to publish this or maintain this (even if its just a few lines of code)
 
