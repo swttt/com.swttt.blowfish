@@ -1,6 +1,10 @@
 **Zone Check**
 
-A simple tool to check if you left any lights on in a zone. Very basic, for personal use only. Not able to publish this or maintain this (even if its just a few lines of code)
+A simple app to check if you left any lights on in a zone. Very basic, for personal use only.
+
+This app adds a condition card you can use in your flows.
+
+Not able to publish or maintain this (even if its just a few lines of code)
 
 __To use__
 
