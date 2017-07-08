@@ -14,3 +14,6 @@ __To do__
 
 - App icon
 - Add a card to check battery values [DONE]
+
+__Icon by__
+Pufferfish by Catalina Montes from the Noun Project
