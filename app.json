@@ -11,19 +11,35 @@
   },
   "flow": {
     "conditions": [{
-      "id": "checkZone",
-      "title": {
-        "en": "Lights are !{{on|off}} in",
-        "nl": "Lampen zijn !{{aan|uit}} in"
+        "id": "checkZone",
+        "title": {
+          "en": "Lights are !{{on|off}} in",
+          "nl": "Lampen zijn !{{aan|uit}} in"
+        },
+        "args": [{
+          "name": "check",
+          "type": "autocomplete",
+          "placeholder": {
+            "en": "Choose a zone",
+            "nl": "Kies een zone"
+          }
+        }]
       },
-      "args": [{
-        "name": "check",
-        "type": "autocomplete",
-        "placeholder": {
-          "en": "Choose a zone",
-          "nl": "Kies een zone"
-        }
-      }]
-    }]
+      {
+        "id": "checkBattery",
+        "title": {
+          "en": "Any device battery level is !{{less|more}} then",
+          "nl": "Batterij niveau van een device is !{{minder|meer}} dan"
+        },
+        "args": [{
+          "name": "batterycheck",
+          "type": "number",
+          "placeholder": {
+            "en": "Battery percentage",
+            "nl": "Batterij percentage"
+          }
+        }]
+      }
+    ]
   }
 }

@@ -14,7 +14,9 @@ let req = request.defaults({
 
 function apiRequest(url, callback) {
   req('http://' + localip + '/api' + url, (err, res, body) => {
-    callback(JSON.parse(body).result, err)
+    if (err) return console.error(err);
+
+    callback(JSON.parse(body).result)
   })
 }
 
@@ -54,6 +56,25 @@ function init() {
           if (res[key].class == 'light') {
             if (res[key].state.onoff == true) {
               // console.log('Found a device that is on!')
+              result = true
+              break
+            }
+          }
+        }
+      }
+      callback(null, result);
+    })
+
+  });
+
+  Homey.manager('flow').on('condition.checkBattery', function(callback, args) {
+    apiRequest('/manager/devices/device/', (res, err) => {
+      var result = false
+      for (var key in res) {
+        if (res.hasOwnProperty(key)) {
+          if (res[key].capabilities.measure_battery) {
+            if (res[key].state.measure_battery < args.batterycheck && res[key].state.measure_battery) {
+              console.log(res[key].name + ' has a battery level below ' + args.batterycheck + '. Current level is ' + res[key].state.measure_battery)
               result = true
               break
             }
