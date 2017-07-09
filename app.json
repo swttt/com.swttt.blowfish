@@ -11,61 +11,92 @@
   },
   "flow": {
     "triggers": [{
-      "id": "update_check",
-      "title": {
-        "en": "Last update check"
-      },
-      "tokens": [{
-        "name": "name",
-        "type": "string",
+        "id": "update_check",
         "title": {
-          "en": "Name",
-          "nl": "Naam"
+          "en": "Last update check"
         },
-        "example": "Motion sensor"
-      }],
-      "args": [{
-          "name": "capability",
-          "type": "text",
-          "placeholder": "Capability"
-        },
-        {
-          "name": "per",
-          "type": "number",
-          "placeholder": "Max. minutes since update"
-        }
-      ],
-      "conditions": [{
-          "id": "checkZone",
+        "tokens": [{
+          "name": "name",
+          "type": "string",
           "title": {
-            "en": "Lights are !{{on|off}} in",
-            "nl": "Lampen zijn !{{aan|uit}} in"
+            "en": "Name",
+            "nl": "Naam"
           },
-          "args": [{
-            "name": "check",
-            "type": "autocomplete",
-            "placeholder": {
-              "en": "Choose a zone",
-              "nl": "Kies een zone"
-            }
-          }]
-        },
-        {
-          "id": "checkBattery",
-          "title": {
-            "en": "Any battery level is !{{less|more}} then",
-            "nl": "Een batterij !{{minder|meer}} is dan"
+          "example": "Motion sensor"
+        }],
+        "args": [{
+            "name": "capability",
+            "type": "text",
+            "placeholder": "Capability"
           },
-          "args": [{
-            "name": "batterycheck",
+          {
+            "name": "per",
             "type": "number",
-            "placeholder": {
-              "en": "Percentage",
-              "nl": "Percentage"
-            }
-          }]
-        }
-      ]
-    }]
+            "placeholder": "Max. minutes since update"
+          }
+        ]
+      },
+      {
+        "id": "battery_check",
+        "title": {
+          "en": "If battery drops below"
+        },
+        "tokens": [{
+            "name": "name",
+            "type": "string",
+            "title": {
+              "en": "Name",
+              "nl": "Naam"
+            },
+            "example": "Motion sensor"
+          },
+          {
+            "name": "batterylvl",
+            "type": "number",
+            "title": {
+              "en": "Battery level",
+              "nl": "Batterij niveau"
+            },
+            "example": "22"
+          }
+        ],
+        "args": [{
+          "name": "lvl",
+          "type": "number",
+          "placeholder": "Battery percentage"
+        }]
+      }
+    ],
+    "conditions": [{
+        "id": "checkZone",
+        "title": {
+          "en": "Lights are !{{on|off}} in",
+          "nl": "Lampen zijn !{{aan|uit}} in"
+        },
+        "args": [{
+          "name": "check",
+          "type": "autocomplete",
+          "placeholder": {
+            "en": "Choose a zone",
+            "nl": "Kies een zone"
+          }
+        }]
+      },
+      {
+        "id": "checkBattery",
+        "title": {
+          "en": "Any battery level is !{{less|more}} then",
+          "nl": "Een batterij !{{minder|meer}} is dan"
+        },
+        "args": [{
+          "name": "batterycheck",
+          "type": "number",
+          "placeholder": {
+            "en": "Percentage",
+            "nl": "Percentage"
+          }
+        }]
+      }
+    ]
   }
 }

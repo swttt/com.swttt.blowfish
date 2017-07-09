@@ -2,8 +2,8 @@
 
 const request = require('request')
 
-let localip = 'YOUR LOCAL IP'
-let bearertoken = 'YOUR BEARER TOKEN'
+
+let bearertoken = 'YOUR TOKEN HERE'
 
 let req = request.defaults({
   headers: {
@@ -13,7 +13,7 @@ let req = request.defaults({
 })
 
 function apiRequest(url, callback) {
-  req('http://' + localip + '/api' + url, (err, res, body) => {
+  req('http://127.0.0.1/api' + url, (err, res, body) => {
     if (err) return console.error(err);
 
     callback(JSON.parse(body).result)
@@ -98,6 +98,19 @@ function init() {
 
   })
 
+  Homey.manager('flow').on('trigger.battery_check', function(callback, args, state) {
+    if (state.state.measure_battery < args.lvl && state.state.measure_battery) {
+
+      callback(null, true)
+    }
+    else {
+      callback(null, false)
+    }
+
+
+
+  })
+
   setInterval(function() {
 
     apiRequest('/manager/devices/device/', (res, err) => {
@@ -106,6 +119,12 @@ function init() {
           Homey.manager('flow').trigger('update_check', {
             name: res[key].name
           }, res[key])
+          if (res[key].capabilities.measure_battery) {
+            Homey.manager('flow').trigger('battery_check', {
+              name: res[key].name,
+              batterylvl: res[key].state.measure_battery
+            }, res[key])
+          }
         }
       }
     })

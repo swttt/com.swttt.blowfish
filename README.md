@@ -1,18 +1,23 @@
 **Blowfish**
 
-A simple app to check if you left any lights on in a zone or if any device has a battery level lower then a set percentage. Very basic, for personal use only.
+This app adds some triggers and condition cards to your flows.
+For example you can:
 
-This app adds condition cards you can use in your flows.
+- Trigger if a device it's battery level drops below percentage X
+- Trigger if some capability hasn't been update for X minutes
+- Condition check if you left any devices on in a specified zone
+- Condition check if there is a device with battery below percentage X
+
 
 Not able to publish or maintain this (even if its just a few lines of code)
 
 __To use__
 
-In app.js you find 2 variables: bearertoken and localip. Set these to your own settings.
+In app.js you find a variable named bearertoken, set this to yours.
 
 __To do__
 
-- App icon
+- App icon [DONE]
 - Add a card to check battery values [DONE]
 
 __Icon by__
