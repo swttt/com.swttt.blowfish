@@ -21,18 +21,15 @@ function apiRequest(url, callback) {
 }
 
 
-
-
 function init() {
 
-
+  // loadSocket()
 
   Homey.manager('flow').on('condition.checkZone.check.autocomplete', (callback, args) => {
     apiRequest('/manager/zones/zone', (res, err) => {
       var allZones = []
       for (var key in res) {
         if (res.hasOwnProperty(key)) {
-          console.log(key)
           allZones.push({
             name: res[key].name,
             icon: '/manager/zones/assets/icons/' + res[key].icon + '.svg',
@@ -84,7 +81,41 @@ function init() {
       callback(null, result);
     })
 
-  });
+  })
+
+  Homey.manager('flow').on('trigger.update_check', function(callback, args, state) {
+    var timeagoupdated = new Date - new Date(state.lastUpdated[args.capability])
+
+    if (args.capability in state.capabilities && timeagoupdated >= args.per * 60 * 1000) {
+
+      callback(null, true)
+    }
+    else {
+      callback(null, false)
+    }
+
+
+
+  })
+
+  setInterval(function() {
+
+    apiRequest('/manager/devices/device/', (res, err) => {
+      for (var key in res) {
+        if (res.hasOwnProperty(key)) {
+          Homey.manager('flow').trigger('update_check', {
+            name: res[key].name
+          }, res[key])
+        }
+      }
+    })
+
+
+  }, 60000);
+
+
+
+
 
 }
 

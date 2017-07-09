@@ -1,4 +1,4 @@
-**Zone Check**
+**Blowfish**
 
 A simple app to check if you left any lights on in a zone or if any device has a battery level lower then a set percentage. Very basic, for personal use only.
 

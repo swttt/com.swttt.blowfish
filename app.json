@@ -1,45 +1,71 @@
 {
-  "id": "com.swttt.zonecheck",
+  "id": "com.swttt.blowfish",
   "name": {
-    "en": "Zone check"
+    "en": "Blowfish"
   },
   "version": "0.0.1",
   "compatibility": "1.x",
   "author": {
     "name": "Bas Jansen",
-    "email": "bas@balotti.com"
+    "email": "b@sjansen.email"
   },
   "flow": {
-    "conditions": [{
-        "id": "checkZone",
-        "title": {
-          "en": "Lights are !{{on|off}} in",
-          "nl": "Lampen zijn !{{aan|uit}} in"
-        },
-        "args": [{
-          "name": "check",
-          "type": "autocomplete",
-          "placeholder": {
-            "en": "Choose a zone",
-            "nl": "Kies een zone"
-          }
-        }]
+    "triggers": [{
+      "id": "update_check",
+      "title": {
+        "en": "Last update check"
       },
-      {
-        "id": "checkBattery",
+      "tokens": [{
+        "name": "name",
+        "type": "string",
         "title": {
-          "en": "Any device battery level is !{{less|more}} then",
-          "nl": "Batterij niveau van een device is !{{minder|meer}} dan"
+          "en": "Name",
+          "nl": "Naam"
         },
-        "args": [{
-          "name": "batterycheck",
+        "example": "Motion sensor"
+      }],
+      "args": [{
+          "name": "capability",
+          "type": "text",
+          "placeholder": "Capability"
+        },
+        {
+          "name": "per",
           "type": "number",
-          "placeholder": {
-            "en": "Battery percentage",
-            "nl": "Batterij percentage"
-          }
-        }]
-      }
-    ]
+          "placeholder": "Max. minutes since update"
+        }
+      ],
+      "conditions": [{
+          "id": "checkZone",
+          "title": {
+            "en": "Lights are !{{on|off}} in",
+            "nl": "Lampen zijn !{{aan|uit}} in"
+          },
+          "args": [{
+            "name": "check",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Choose a zone",
+              "nl": "Kies een zone"
+            }
+          }]
+        },
+        {
+          "id": "checkBattery",
+          "title": {
+            "en": "Any battery level is !{{less|more}} then",
+            "nl": "Een batterij !{{minder|meer}} is dan"
+          },
+          "args": [{
+            "name": "batterycheck",
+            "type": "number",
+            "placeholder": {
+              "en": "Percentage",
+              "nl": "Percentage"
+            }
+          }]
+        }
+      ]
+    }]
   }
 }
