@@ -122,13 +122,10 @@ function init() {
                   name: res[key].name
                 }, res[key])
                 if (res[key].capabilities && res[key].capabilities.measure_battery) {
-                  console.log(res[key].name, ' has measure battery: ', res[key].capabilities)
                   Homey.manager('flow').trigger('battery_check', {
                     name: res[key].name,
                     batterylvl: res[key].state.measure_battery
                   }, res[key])
-                } else {
-                console.log(res[key].name, ' has no measure battery because res[key].capabilities = ', res[key].capabilities)
                 }
               }
             }
