@@ -38,7 +38,8 @@ function init() {
         }
       }
       allZones = allZones.filter(function(item) {
-        return (item.name.toLowerCase().indexOf(args.query.toLowerCase()) > -1)
+        if (item.name) return (item.name.toLowerCase().indexOf(args.query.toLowerCase()) > -1)
+        else callback('Error while reading zones, did you enter the bearer token?', null)
       })
       // console.log(allZones)
       callback(null, allZones)
@@ -114,28 +115,29 @@ function init() {
   setInterval(function() {
 
     apiRequest('/manager/devices/device/', (res, err) => {
-      for (var key in res) {
-        if (res.hasOwnProperty(key)) {
-          Homey.manager('flow').trigger('update_check', {
-            name: res[key].name
-          }, res[key])
-          if (res[key].capabilities.measure_battery) {
-            Homey.manager('flow').trigger('battery_check', {
-              name: res[key].name,
-              batterylvl: res[key].state.measure_battery
-            }, res[key])
-          }
-        }
+      if (res != 'unauthorized') {
+            for (var key in res) {
+              if (res.hasOwnProperty(key)) {
+                Homey.manager('flow').trigger('update_check', {
+                  name: res[key].name
+                }, res[key])
+                if (res[key].capabilities && res[key].capabilities.measure_battery) {
+                  console.log(res[key].name, ' has measure battery: ', res[key].capabilities)
+                  Homey.manager('flow').trigger('battery_check', {
+                    name: res[key].name,
+                    batterylvl: res[key].state.measure_battery
+                  }, res[key])
+                } else {
+                console.log(res[key].name, ' has no measure battery because res[key].capabilities = ', res[key].capabilities)
+                }
+              }
+            }
+      } else {
+      console.log('Unauthorized, please input bearer token in app.js file');
       }
     })
 
-
   }, 60000);
-
-
-
-
-
 }
 
 module.exports.init = init;
