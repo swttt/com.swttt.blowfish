@@ -2,8 +2,7 @@
 
 const request = require('request')
 
-
-let bearertoken = 'YOUR TOKEN HERE'
+let bearertoken = Homey.env.BEARER_TOKEN
 
 let req = request.defaults({
   headers: {
@@ -20,12 +19,18 @@ function apiRequest(url, callback) {
   })
 }
 
+function sendNotification(message) {
+    Homey.manager('notifications').createNotification({
+        excerpt: message
+    }, function( err, notification ){
+        if( err ) return console.error( err );
+        console.log( 'Notification send: ' + message );
+    });
+}
 
-function init() {
-
-  // loadSocket()
-
+function registerFlows() {
   Homey.manager('flow').on('condition.checkZone.check.autocomplete', (callback, args) => {
+    console.log('On flow: Check zone autocomplete')
     apiRequest('/manager/zones/zone', (res, err) => {
       var allZones = []
       for (var key in res) {
@@ -47,6 +52,7 @@ function init() {
   })
 
   Homey.manager('flow').on('condition.checkZone', function(callback, args) {
+    console.log('On flow: Check zone')
     apiRequest('/manager/devices/device/?zone=' + args.check.id, (res, err) => {
       var result = false
       for (var key in res) {
@@ -66,6 +72,7 @@ function init() {
   });
 
   Homey.manager('flow').on('condition.checkBattery', function(callback, args) {
+    console.log('On flow: Check battery')
     apiRequest('/manager/devices/device/', (res, err) => {
       var result = false
       for (var key in res) {
@@ -85,35 +92,30 @@ function init() {
   })
 
   Homey.manager('flow').on('trigger.update_check', function(callback, args, state) {
+    console.log('On flow: Update check')
     var timeagoupdated = new Date - new Date(state.lastUpdated[args.capability])
 
     if (args.capability in state.capabilities && timeagoupdated >= args.per * 60 * 1000) {
-
       callback(null, true)
     }
     else {
       callback(null, false)
     }
-
-
-
   })
 
   Homey.manager('flow').on('trigger.battery_check', function(callback, args, state) {
+    console.log('On flow: Battery check')
     if (state.state.measure_battery < args.lvl && state.state.measure_battery) {
-
       callback(null, true)
     }
     else {
       callback(null, false)
     }
-
-
-
   })
+}
 
-  setInterval(function() {
-
+function getHomeyDevices() {
+    console.log('Get Homey devices')
     apiRequest('/manager/devices/device/', (res, err) => {
       if (res != 'unauthorized') {
             for (var key in res) {
@@ -133,8 +135,34 @@ function init() {
       console.log('Unauthorized, please input bearer token in app.js file');
       }
     })
+}
+
+function scheduleChecks() {
+  setInterval(function() {
+
+    console.log('scheduled checks')
+    getHomeyDevices();
 
   }, 60000);
 }
 
+function checkBearerToken() {
+    return typeof bearertoken === 'string' || bearertoken instanceof String
+}
+
+function init() {
+
+  // loadSocket()
+
+  if (checkBearerToken) {
+    console.log('Bearer token = ' + bearertoken)
+    registerFlows()
+    scheduleChecks()
+    getHomeyDevices()
+  } else {
+    sendNotification('Bearer token unknown')
+    console.log('Bearer token ', bearertoken)
+  }
+
+}
 module.exports.init = init;
