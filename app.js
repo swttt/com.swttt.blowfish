@@ -3,7 +3,7 @@
 const request = require('request')
 
 
-let bearertoken = 'YOUR TOKEN HERE'
+let bearertoken = Homey.env.BEARER_TOKEN
 
 let req = request.defaults({
   headers: {
