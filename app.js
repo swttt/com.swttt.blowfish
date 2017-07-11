@@ -14,8 +14,9 @@ let req = request.defaults({
 function apiRequest(url, callback) {
   req('http://127.0.0.1/api' + url, (err, res, body) => {
     if (err) return console.error(err);
-
-    callback(JSON.parse(body).result)
+    var json = JSON.parse(body).result
+    var statusCode = JSON.parse(body).status
+    callback(json, err, statusCode)
   })
 }
 
@@ -31,7 +32,7 @@ function sendNotification(message) {
 function registerFlows() {
   Homey.manager('flow').on('condition.checkZone.check.autocomplete', (callback, args) => {
     console.log('On flow: Check zone autocomplete')
-    apiRequest('/manager/zones/zone', (res, err) => {
+    apiRequest('/manager/zones/zone', (res, err, statusCode) => {
       var allZones = []
       for (var key in res) {
         if (res.hasOwnProperty(key)) {
@@ -53,7 +54,7 @@ function registerFlows() {
 
   Homey.manager('flow').on('condition.checkZone', function(callback, args) {
     console.log('On flow: Check zone')
-    apiRequest('/manager/devices/device/?zone=' + args.check.id, (res, err) => {
+    apiRequest('/manager/devices/device/?zone=' + args.check.id, (res, err, statusCode) => {
       var result = false
       for (var key in res) {
         if (res.hasOwnProperty(key)) {
@@ -73,7 +74,7 @@ function registerFlows() {
 
   Homey.manager('flow').on('condition.checkBattery', function(callback, args) {
     console.log('On flow: Check battery')
-    apiRequest('/manager/devices/device/', (res, err) => {
+    apiRequest('/manager/devices/device/', (res, err, statusCode) => {
       var result = false
       for (var key in res) {
         if (res.hasOwnProperty(key)) {
@@ -116,7 +117,7 @@ function registerFlows() {
 
 function getHomeyDevices() {
     console.log('Get Homey devices')
-    apiRequest('/manager/devices/device/', (res, err) => {
+    apiRequest('/manager/devices/device/', (res, err, statusCode) => {
       if (res != 'unauthorized') {
             for (var key in res) {
               if (res.hasOwnProperty(key)) {
@@ -146,23 +147,32 @@ function scheduleChecks() {
   }, 60000);
 }
 
-function checkBearerToken() {
-    return typeof bearertoken === 'string' || bearertoken instanceof String
+function checkBearerToken(callback) {
+  console.log('checkBearerToken')
+
+  var bearerTokenIsString = typeof bearertoken === 'string' || bearertoken instanceof String
+  apiRequest('/manager/users/user/me', (res, err, statusCode) => {
+    var result = bearerTokenIsString && statusCode == 200
+    callback(result)
+  })
 }
 
 function init() {
 
   // loadSocket()
 
-  if (checkBearerToken) {
-    console.log('Bearer token = ' + bearertoken)
-    registerFlows()
-    scheduleChecks()
-    getHomeyDevices()
-  } else {
-    sendNotification('Bearer token unknown')
-    console.log('Bearer token ', bearertoken)
-  }
-
+  checkBearerToken((resultOk) => {
+    if (resultOk) {
+     console.log('Check bearer token is ok')
+     console.log('Bearer token = ' + bearertoken)
+     registerFlows()
+     scheduleChecks()
+     getHomeyDevices()
+    } else {
+      console.log('Bearer code not ok', bearertoken)
+      sendNotification('Bearer token unknown')
+      console.log('Bearer token = ', bearertoken)
+    }
+  })
 }
 module.exports.init = init;
