@@ -146,11 +146,15 @@ function scheduleChecks() {
   }, 60000);
 }
 
+function checkBearerToken() {
+    return typeof bearertoken === 'string' || bearertoken instanceof String
+}
+
 function init() {
 
   // loadSocket()
 
-  if (typeof bearertoken === 'string' || bearertoken instanceof String) {
+  if (checkBearerToken) {
     console.log('Bearer token = ' + bearertoken)
     registerFlows()
     scheduleChecks()
