@@ -20,12 +20,12 @@ function apiRequest(url, callback) {
 }
 
 function sendNotification(message) {
-    Homey.manager('notifications').createNotification({
-        excerpt: message
-    }, function( err, notification ){
-        if( err ) return console.error( err );
-        console.log( 'Notification send: ' + message );
-    });
+  Homey.manager('notifications').createNotification({
+    excerpt: message
+  }, function(err, notification) {
+    if (err) return console.error(err);
+    console.log('Notification send: ' + message);
+  });
 }
 
 function registerFlows() {
@@ -115,26 +115,26 @@ function registerFlows() {
 }
 
 function getHomeyDevices() {
-    console.log('Get Homey devices')
-    apiRequest('/manager/devices/device/', (res, err) => {
-      if (res != 'unauthorized') {
-            for (var key in res) {
-              if (res.hasOwnProperty(key)) {
-                Homey.manager('flow').trigger('update_check', {
-                  name: res[key].name
-                }, res[key])
-                if (res[key].capabilities && res[key].capabilities.measure_battery) {
-                  Homey.manager('flow').trigger('battery_check', {
-                    name: res[key].name,
-                    batterylvl: res[key].state.measure_battery
-                  }, res[key])
-                }
-              }
-            }
-      } else {
-      console.log('Unauthorized, please input bearer token in app.js file');
+  console.log('Get Homey devices')
+  apiRequest('/manager/devices/device/', (res, err) => {
+    if (res != 'unauthorized') {
+      for (var key in res) {
+        if (res.hasOwnProperty(key)) {
+          Homey.manager('flow').trigger('update_check', {
+            name: res[key].name
+          }, res[key])
+          if (res[key].capabilities && res[key].capabilities.measure_battery) {
+            Homey.manager('flow').trigger('battery_check', {
+              name: res[key].name,
+              batterylvl: res[key].state.measure_battery
+            }, res[key])
+          }
+        }
       }
-    })
+    } else {
+      console.log('Unauthorized, please input bearer token in app.js file');
+    }
+  })
 }
 
 function scheduleChecks() {
@@ -147,12 +147,10 @@ function scheduleChecks() {
 }
 
 function checkBearerToken() {
-    return typeof bearertoken === 'string' || bearertoken instanceof String
+  return typeof bearertoken === 'string' || bearertoken instanceof String
 }
 
 function init() {
-
-  // loadSocket()
 
   if (checkBearerToken) {
     console.log('Bearer token = ' + bearertoken)
