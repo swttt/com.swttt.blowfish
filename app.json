@@ -3,11 +3,20 @@
   "name": {
     "en": "Blowfish"
   },
+  "tags": {
+    "en": ["battery capability check"]
+  },
   "version": "0.0.1",
   "compatibility": "1.x",
   "author": {
     "name": "Bas Jansen",
     "email": "b@sjansen.email"
+  },
+  "contributors": {
+    "developers": [{
+      "name": "Inversion NL",
+      "email": "inversion-nl@gmail.com"
+    }]
   },
   "flow": {
     "triggers": [{
