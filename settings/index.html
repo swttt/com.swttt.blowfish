@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+  <head>
+    <script type="text/javascript" src="/manager/webserver/assets/js/angular.js"></script>
+    <script>
+      angular.module('blowfishSettings', []).controller('settingsCtrl', [
+        '$scope',
+        function ($scope) {
+
+          Homey.get('bearertoken', function (err, state) {
+            if (state) {
+              $scope.bearertoken = state;
+              console.log(state);
+              $scope.$apply();
+            };
+          });
+          $scope.saveConfig = function () {
+            Homey.set('bearertoken', $scope.bearertoken);
+            $scope.settingssaved = true;
+            console.log('settings saved!');
+          };
+        }
+      ]);
+      function onHomeyReady() {
+        Homey.ready();
+        angular.bootstrap(document, ['blowfishSettings']);
+      }
+    </script>
+  </head>
+
+  <body ng-controller="settingsCtrl" ng-cloak>
+
+    <center><img src="logo.png"/></center>
+
+    <h1>Blowfish Settings</h1>
+
+    <fieldset>
+      <legend>Bearer token</legend>
+      <p>
+        The allmighty bearer token is needed to give Blowfish the ability to retreive the state of devices. Without a bearer token Blowfish isn't able to function at all, the Blowfish becomes a goldfish then and is just something to watch...nothing
+        functional left.
+      </p>
+      <p>
+        <b>Be sure to keep your bearer token save!</b>
+        If someone knows your cloud id and has your bearer token, he/she or it is able to control
+        <i>everything</i>
+        on your homey. You can find your bearer token by going to http://my.athom.com , then login and chose your homey. Then you will see a bigger homey(when you normally click it gets you to the UI), rightmouse click on the big homey and copy the link. Now
+        paste the link somewhere readable and copy the part after
+        <i>bearer_token=</i>
+        and paste it below.
+      </p>
+      <label for="bearertoken">Bearer token</label>
+      <input id="bearertoken" ng-model="bearertoken" type="text" value="Your bearer token">
+      <button ng-click="saveConfig()">Save</button>
+      <p>
+        <b ng-if="settingssaved">BLUB...BLUB...BLUB..Settings are saved!</b>
+      </p>
+    </fieldset>
+
+  </body>
+
+</html>

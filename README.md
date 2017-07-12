@@ -1,4 +1,4 @@
-**Blowfish**
+# Blowfish
 
 This app adds some triggers and condition cards to your flows.
 For example you can:
@@ -8,17 +8,23 @@ For example you can:
 - Condition check if you left any devices on in a specified zone
 - Condition check if there is a device with battery below percentage X
 
+---
 
-Not able to publish or maintain this (even if its just a few lines of code)
+### Donate
 
-__To use__
+If you like this app, then consider to buy me a beer :)
 
-In app.js you find a variable named bearertoken, set this to yours.
+[![Donate](https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png)](https://paypal.me/BasJansen)
 
-__To do__
+---
 
-- App icon [DONE]
-- Add a card to check battery values [DONE]
+### Changelog
+
+##### 0.0.1
+Initial appstore release
+
+---
 
 __Icon by__
+
 Pufferfish by Catalina Montes from the Noun Project

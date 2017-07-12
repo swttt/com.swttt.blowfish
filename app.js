@@ -2,7 +2,18 @@
 
 const request = require('request')
 
-let bearertoken = Homey.env.BEARER_TOKEN
+let bearertoken = Homey.manager('settings').get( 'bearertoken' )
+
+Homey.manager('settings').on('set', function(setting) {
+  bearertoken = Homey.manager('settings').get( 'bearertoken' )
+  console.log('New bearertoken set', bearertoken)
+  req = request.defaults({
+    headers: {
+      'Authorization': 'Bearer ' + bearertoken,
+      'Content-Type': 'application/json'
+    }
+  })
+})
 
 let req = request.defaults({
   headers: {
@@ -143,7 +154,7 @@ function scheduleChecks() {
     console.log('scheduled checks')
     getHomeyDevices();
 
-  }, 60000);
+  }, 300000);
 }
 
 function checkBearerToken() {
