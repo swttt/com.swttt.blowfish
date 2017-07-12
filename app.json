@@ -6,6 +6,15 @@
   "tags": {
     "en": ["battery capability check"]
   },
+  "description": {
+    "en": "An app to check for batter levels and certain capabilities.",
+    "nl": "Een app om het batterij niveau te controleren en andere capabilities."
+  },
+  "category": "tools",
+  "images": {
+    "large": "./assets/images/large.png",
+    "small": "./assets/images/small.png"
+  },
   "version": "0.0.1",
   "compatibility": "1.x",
   "author": {
