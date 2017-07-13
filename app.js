@@ -1,32 +1,56 @@
 "use strict";
 
 const request = require('request')
+let intervalId
+let bearertoken
+let req
 
-let bearertoken = Homey.manager('settings').get( 'bearertoken' )
-
-Homey.manager('settings').on('set', function(setting) {
+function getHomeySettings() {
+  console.log('get Homey settings')
   bearertoken = Homey.manager('settings').get( 'bearertoken' )
-  console.log('New bearertoken set', bearertoken)
+  console.log('bearer token', bearertoken)
   req = request.defaults({
     headers: {
       'Authorization': 'Bearer ' + bearertoken,
       'Content-Type': 'application/json'
     }
   })
-})
+}
 
-let req = request.defaults({
-  headers: {
-    'Authorization': 'Bearer ' + bearertoken,
-    'Content-Type': 'application/json'
-  }
-})
+function setHomeySettingsListener() {
+
+  Homey.manager('settings').on('set', function(setting) {
+
+    if (setting == 'bearertoken') {
+      getHomeySettings()
+      checkBearerToken((resultOk) => {
+        if (resultOk) {
+         console.log('Check bearer token is ok')
+         console.log('Bearer token = ' + bearertoken)
+         stopChecks();
+         scheduleChecks()
+         getHomeyDevices()
+        } else {
+          console.log('Bearer code not ok')
+          sendNotification(__("notifications.bearertokenwrong"))
+          console.log('Bearer token = ', bearertoken)
+          stopChecks();
+        }
+      })
+    }
+    else console.log('setting', setting)
+  })
+
+}
 
 function apiRequest(url, callback) {
   req('http://127.0.0.1/api' + url, (err, res, body) => {
-    if (err) return console.error(err);
-    var json = JSON.parse(body).result
-    var statusCode = JSON.parse(body).status
+    console.log('API request')
+    console.log('bearer token', bearertoken)
+    let json = JSON.parse(body).result
+    let statusCode = JSON.parse(body).status
+    console.log('api request error', err)
+    console.log('api request status', statusCode)
     callback(json, err, statusCode)
   })
 }
@@ -144,13 +168,14 @@ function getHomeyDevices() {
               }
             }
       } else {
-      console.log('Unauthorized, please input bearer token in app.js file');
+      sendNotification(__("notifications.bearertokenwrong"))
       }
     })
 }
 
 function scheduleChecks() {
-  setInterval(function() {
+  console.log('Schedule checks')
+  intervalId = setInterval(function() {
 
     console.log('scheduled checks')
     getHomeyDevices();
@@ -158,12 +183,17 @@ function scheduleChecks() {
   }, 300000);
 }
 
+function stopChecks() {
+  console.log('Stop checks')
+  if (typeof intervalId != 'undefined') clearInterval(intervalId);
+}
+
 function checkBearerToken(callback) {
   console.log('checkBearerToken')
 
-  var bearerTokenIsString = typeof bearertoken === 'string' || bearertoken instanceof String
+  let bearerTokenIsString = typeof bearertoken === 'string' || bearertoken instanceof String
   apiRequest('/manager/users/user/me', (res, err, statusCode) => {
-    var result = bearerTokenIsString && statusCode == 200
+    let result = bearerTokenIsString && statusCode == 200
     callback(result)
   })
 }
@@ -171,6 +201,8 @@ function checkBearerToken(callback) {
 function init() {
 
   // loadSocket()
+  getHomeySettings();
+  setHomeySettingsListener();
 
   checkBearerToken((resultOk) => {
     if (resultOk) {
@@ -180,9 +212,13 @@ function init() {
      scheduleChecks()
      getHomeyDevices()
     } else {
-      console.log('Bearer code not ok', bearertoken)
-      sendNotification('Bearer token unknown')
+      console.log('Bearer code not ok')
       console.log('Bearer token = ', bearertoken)
+      if (typeof bearertoken == 'undefined') {
+        // First start of the app, send a less panic notification
+        console.log('Since bearer token is undefined, send less panic notification')
+        sendNotification(__("notifications.bearertokenonfirststart"))
+      } else sendNotification(__("notifications.bearertokenwrong"))
     }
   })
 }

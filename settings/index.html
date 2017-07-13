@@ -33,29 +33,24 @@
 
     <center><img src="logo.png"/></center>
 
-    <h1>Blowfish Settings</h1>
+    <h1 data-i18n="settings.title"></h1>
 
     <fieldset>
       <legend>Bearer token</legend>
+      <p data-i18n="settings.intro1">intro1</p>
       <p>
-        The almighty bearer token is needed to give Blowfish the ability to retrieve the state of devices.
-        Without a bearer token Blowfish isn't able to function at all,
-        the Blowfish becomes a goldfish and is just something to watch... no functional left.
+        <b data-i18n="settings.keepsafe"></b>
+        <p>
+          <normal data-i18n="settings.explanation1"></normal>
+          <i data-i18n="settings.words.everything"></i>
+          <normal data-i18n="settings.explanation2"></normal>
+          <i data-i18n="settings.words.bearer_token"></i>=
+          <normal data-i18n="settings.explanation3"></normal>
+        </p>
       </p>
-      <p>
-        <b>Be sure to keep your bearer token safe!</b>
-        If someone gets a hold of your cloud ID and has your bearer token, he/she (or it) is able to control
-        <i>everything</i>
-        on your homey. You can find your bearer token by going to http://my.athom.com , then login and choose your homey.
-        You will then see a bigger homey(when you normally click it gets you to the UI),
-        right mouse click on the big homey and copy the link.
-        Now paste the link somewhere readable and copy the part after
-        <i>bearer_token=</i>
-        and paste it below.
-      </p>
-      <label for="bearertoken">Bearer token</label>
-      <input id="bearertoken" ng-model="bearertoken" type="text" value="Your bearer token">
-      <button ng-click="saveConfig()">Save</button>
+      <label for="bearertoken" data-i18n="settings.words.bearer_token2">bearer_token2</label>
+      <input id="bearertoken" ng-model="bearertoken" type="text" value="Bearer token">
+      <button ng-click="saveConfig()" data-i18n="settings.words.save">Save</button>
       <p>
         <b ng-if="settingssaved">BLUB...BLUB...BLUB..Settings are saved!</b>
       </p>
