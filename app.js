@@ -28,6 +28,7 @@ function setHomeySettingsListener() {
          console.log('Check bearer token is ok')
          console.log('Bearer token = ' + bearertoken)
          stopChecks();
+         registerFlows()
          scheduleChecks()
          getHomeyDevices()
         } else {
