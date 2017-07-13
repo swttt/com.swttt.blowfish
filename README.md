@@ -20,6 +20,10 @@ If you like this app, then consider to buy me a beer :)
 
 ### Changelog
 
+##### 0.0.2
+Some textual enhancements
+
+
 ##### 0.0.1
 Initial appstore release
 
