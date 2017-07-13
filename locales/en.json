@@ -1,1 +1,20 @@
-{}
+{
+  "settings": {
+    "title": "Blowfish Settings",
+    "intro1": "The almighty bearer token is needed to give Blowfish the ability to retrieve the state of devices. Without a bearer token Blowfish isn't able to function at all, the Blowfish becomes a goldfish and is just something to watch... no functional left.",
+    "keepsafe": "Be sure to keep your bearer token safe!",
+    "explanation1": "If someone gets a hold of your cloud ID and has your bearer token, he/she (or it) is able to control",
+    "explanation2": "on your homey. You can find your bearer token by going to http://my.athom.com , then login and choose your homey.     You will then see a bigger homey(when you normally click it gets you to the UI),    right mouse click on the big homey and copy the link. Now paste the link somewhere readable and copy the part after",
+    "explanation3": "and paste it below.",
+      "words": {
+        "everything": "everything",
+        "bearer_token": "bearer_token",
+        "bearer_token2": "Bearer token",
+        "save": "Save"
+      }
+  },
+  "notifications": {
+    "bearertokenwrong": "Wrong bearer token! Please go to the settings of this app",
+    "bearertokenonfirststart": "This app needs the bearer token. Please go to the settings of this app"
+  }
+}
