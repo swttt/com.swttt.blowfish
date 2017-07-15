@@ -34,14 +34,24 @@
           "en": "Last update check"
         },
         "tokens": [{
-          "name": "name",
-          "type": "string",
-          "title": {
-            "en": "Name",
-            "nl": "Naam"
+            "name": "name",
+            "type": "string",
+            "title": {
+              "en": "Name",
+              "nl": "Naam"
+            },
+            "example": "Motion sensor"
           },
-          "example": "Motion sensor"
-        }],
+          {
+            "name": "id",
+            "type": "string",
+            "title": {
+              "en": "ID",
+              "nl": "ID"
+            },
+            "example": "Motion sensor"
+          }
+        ],
         "args": [{
             "name": "capability",
             "type": "text",

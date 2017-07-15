@@ -158,7 +158,8 @@ function getHomeyDevices() {
             for (var key in res) {
               if (res.hasOwnProperty(key)) {
                 Homey.manager('flow').trigger('update_check', {
-                  name: res[key].name
+                  name: res[key].name,
+                  id: res[key].id
                 }, res[key])
                 if (res[key].capabilities && res[key].capabilities.measure_battery) {
                   Homey.manager('flow').trigger('battery_check', {
